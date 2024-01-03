@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <PID_v1.h>
-#include <Adafruit_MAX31855.h>
+#include <max6675.h>
 #include <Adafruit_SSD1306.h>
 
 #define SCREEN_WIDTH 128
@@ -61,7 +61,7 @@ double temp;
 
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-Adafruit_MAX31855 thermocouple(MAXCLK, MAXCS, MAXDO);
+MAX6675 thermocouple(MAXCLK, MAXCS, MAXDO);
 PID myPID(&input, &output, &setpoint, Kp, Ki, Kd, DIRECT);
 
 void (*reset)(void) = 0;
@@ -98,8 +98,6 @@ void setup() {
   display.setRotation(2);  // rotate 180
   display.setTextSize(2);
   display.setTextColor(WHITE);
-
-  thermocouple.begin();
 
   startTemp = thermocouple.readCelsius();
   setpoint = thermocouple.readCelsius();
